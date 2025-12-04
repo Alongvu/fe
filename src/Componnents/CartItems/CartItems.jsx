@@ -2,7 +2,16 @@ import React, { useContext } from "react";
 import "./CartItems.css";
 import { ShopContext } from "../../Context/ShopContext";
 import { useNavigate } from "react-router-dom";
-import remove_icon from "../Assets/cart_cross_icon.png";
+import { 
+  FaShoppingCart, 
+  FaLock, 
+  FaArrowRight,
+  FaTrashAlt,
+  FaCheckCircle 
+} from "react-icons/fa";
+import { 
+  MdLocalShipping 
+} from "react-icons/md";
 
 const CartItems = () => {
   const {
@@ -65,86 +74,137 @@ const CartItems = () => {
 
   return (
     <div className="cartitems">
-
-      <div className="cartitems-format-main">
-        <p>Product</p>
-        <p>Name</p>
-        <p>Size</p>
-        <p>Price</p>
-        <p>Quantity</p>
-        <p>Tatol</p>
-        <p>Delete</p>
+      <div className="cartitems-header">
+        <h1>Shopping Cart</h1>
+        <p className="cart-count">
+          {Object.keys(cartItems).filter((key) => cartItems[key] > 0).length} items
+        </p>
       </div>
-      <hr />
 
-      {Object.keys(cartItems)
-        .filter((key) => cartItems[key] > 0)
-        .map((key) => {
-          const [id, size] = key.split("_");
-          const product = all_product.find((p) => p.id === Number(id));
-
-          return (
-            <div key={key}>
-              <div className="cartitems-format">
-                <img src={product.image} alt="" className="cartitems-product-icon" />
-
-                <p>{product.name}</p>
-                <p>{size}</p>
-                <p>{product.new_price.toLocaleString()}$</p>
-
-                <p>{cartItems[key]}</p>
-
-                <p>{(product.new_price * cartItems[key]).toLocaleString()}$</p>
-
-                <img
-                  src={remove_icon}
-                  onClick={() => removeFromCart(key)}
-                  className="cartitems-remove-icon"
-                />
-              </div>
-              <hr />
+      {Object.keys(cartItems).filter((key) => cartItems[key] > 0).length === 0 ? (
+        <div className="cart-empty">
+          <div className="empty-icon">
+            <FaShoppingCart />
+          </div>
+          <h2>Your cart is empty</h2>
+          <p>Add some items to get started!</p>
+          <button onClick={() => navigate("/")}>Continue Shopping</button>
+        </div>
+      ) : (
+        <>
+          <div className="cartitems-list">
+            <div className="cartitems-table-header">
+              <div className="col-product">Product</div>
+              <div className="col-name">Details</div>
+              <div className="col-price">Price</div>
+              <div className="col-quantity">Quantity</div>
+              <div className="col-total">Total</div>
+              <div className="col-remove"></div>
             </div>
-          );
-        })}
 
-      {/* --- CART TOTAL + PROMO CODE --- */}
-      <div className="cartitems-down">
-        {/* LEFT SIDE */}
-        <div className="cartitems-total">
-          <h1>Cart Totals</h1>
+            {Object.keys(cartItems)
+              .filter((key) => cartItems[key] > 0)
+              .map((key) => {
+                const [id, size] = key.split("_");
+                const product = all_product.find((p) => p.id === Number(id));
 
-          <div className="cartitems-total-item">
-            <p>Subtotal</p>
-            <p>{getTotalCartAmount().toLocaleString()}$</p>
+                return (
+                  <div key={key} className="cartitem-card">
+                    <div className="col-product">
+                      <img 
+                        src={product.image} 
+                        alt={product.name} 
+                        className="cartitem-image" 
+                      />
+                    </div>
+
+                    <div className="col-name">
+                      <h3>{product.name}</h3>
+                      <span className="product-size">Size: {size}</span>
+                    </div>
+
+                    <div className="col-price">
+                      <span className="price">${product.new_price.toLocaleString()}</span>
+                    </div>
+
+                    <div className="col-quantity">
+                      <div className="quantity-badge">{cartItems[key]}</div>
+                    </div>
+
+                    <div className="col-total">
+                      <span className="total-price">
+                        ${(product.new_price * cartItems[key]).toLocaleString()}
+                      </span>
+                    </div>
+
+                    <div className="col-remove">
+                      <button
+                        className="remove-btn"
+                        onClick={() => removeFromCart(key)}
+                        title="Remove item"
+                      >
+                        <FaTrashAlt />
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
           </div>
 
-          <div className="cartitems-total-item">
-            <p>Shipping fee</p>
-            <p>Free</p>
+          {/* --- CART SUMMARY + PROMO CODE --- */}
+          <div className="cartitems-bottom">
+            {/* LEFT SIDE — PROMO CODE */}
+            <div className="cartitems-promocode">
+              <h3>Have a promo code?</h3>
+              <p>Enter your code to get discount</p>
+              <div className="cartitems-promobox">
+                <input type="text" placeholder="Enter promo code" />
+                <button>Apply</button>
+              </div>
+            </div>
+
+            {/* RIGHT SIDE — CART TOTAL */}
+            <div className="cartitems-summary">
+              <h2>Order Summary</h2>
+
+              <div className="summary-row">
+                <span>Subtotal</span>
+                <span className="value">${getTotalCartAmount().toLocaleString()}</span>
+              </div>
+
+              <div className="summary-row">
+                <span>
+                  <MdLocalShipping style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+                  Shipping
+                </span>
+                <span className="value free">Free</span>
+              </div>
+
+              <div className="summary-row discount">
+                <span>Discount</span>
+                <span className="value">-$0</span>
+              </div>
+
+              <div className="summary-divider"></div>
+
+              <div className="summary-row total">
+                <span>Total</span>
+                <span className="value">${getTotalCartAmount().toLocaleString()}</span>
+              </div>
+
+              <button className="checkout-btn" onClick={handleCheckout}>
+                <span>Proceed to Checkout</span>
+                <FaArrowRight className="arrow" />
+              </button>
+
+              <div className="secure-checkout">
+                <FaLock />
+                <span>Secure Checkout</span>
+              </div>
+            </div>
           </div>
-
-          <div className="cartitems-total-item">
-            <h3>Total</h3>
-            <h3>{getTotalCartAmount().toLocaleString()}$
-
-                
-            </h3>
-          </div>
-
-          <button onClick={handleCheckout}>PROCEED TO CHECKOUT</button>
-        </div>
-
-        {/* RIGHT SIDE — PROMO CODE */}
-        <div className="cartitems-promocode">
-          <p>If you have a promo code, Enter it here</p>
-
-          <div className="cartitems-promobox">
-            <input type="text" placeholder="" />
-            <button>Submit</button>
-          </div>
-        </div>
-      </div>
-
+        </>
+      )}
     </div>
   );
 };

@@ -4,6 +4,20 @@ import { ShopContext } from "../../Context/ShopContext";
 import PayPalCheckout from "../PayPalCheckout/PayPalCheckout";
 import { useNavigate } from "react-router-dom";
 import "./Checkout.css";
+import { 
+  FaShippingFast, 
+  FaCreditCard, 
+  FaMoneyBillWave,
+  FaWallet,
+  FaLock,
+  FaCheckCircle,
+  FaEdit,
+  FaArrowRight
+} from "react-icons/fa";
+import { 
+  SiPaypal,
+  SiVisa
+} from "react-icons/si";
 
 const FALLBACK_USD_VND_RATE = Number(process.env.REACT_APP_USD_VND_RATE) || 24000;
 
@@ -180,59 +194,149 @@ const Checkout = () => {
   };
 
   const paymentMethods = [
-    { id: "cod", name: "Cash on Delivery (COD)", icon: "💵" },
-    { id: "momo", name: "MoMo Wallet", icon: "🟪" },
-    { id: "vnpay", name: "VNPay QR", icon: "🟦" },
-    { id: "zalopay", name: "ZaloPay", icon: "🟩" },
-    { id: "paypal", name: "PayPal / International Cards", icon: "🅿️" },
+    { id: "cod", name: "Cash on Delivery (COD)", icon: <FaMoneyBillWave /> },
+    { id: "momo", name: "MoMo Wallet", icon: <FaWallet /> },
+    { id: "vnpay", name: "VNPay QR", icon: <FaCreditCard /> },
+    { id: "zalopay", name: "ZaloPay", icon: <FaWallet /> },
+    { id: "paypal", name: "PayPal / International Cards", icon: <SiPaypal /> },
   ];
 
   return (
     <div className="checkout-container">
-      {/* BỌC BAO NGOÀI ĐỂ TẠO LAYOUT FLEX */}
+      <div className="checkout-header">
+        <h1>Checkout</h1>
+        <div className="checkout-steps">
+          <div className={`step ${!orderReady ? 'active' : 'completed'}`}>
+            <span className="step-number">1</span>
+            <span className="step-label">Shipping Info</span>
+          </div>
+          <div className="step-divider"></div>
+          <div className={`step ${orderReady ? 'active' : ''}`}>
+            <span className="step-number">2</span>
+            <span className="step-label">Payment</span>
+          </div>
+        </div>
+      </div>
+
       <div className="checkout-layout-wrapper">
         
-        {/* CỘT BÊN TRÁI: THÔNG TIN GIAO HÀNG */}
+        {/* LEFT COLUMN: SHIPPING INFORMATION */}
         <div className="checkout-left-column">
-          <h1>Shipping Information</h1>
-          <form onSubmit={handleSubmitInfo} className="checkout-form">
-            <div className="form-group">
-                <label>Full Name:</label>
-                <input name="name" value={customerInfo.name} onChange={handleChange} required placeholder="" />
-            </div>
-            <div className="form-group">
-                <label>Email:</label>
-                <input type="email" name="email" value={customerInfo.email} onChange={handleChange} required placeholder="email@example.com"/>
-            </div>
-            <div className="form-group">
-                <label>Phone Number:</label>
-                <input name="phone" value={customerInfo.phone} onChange={handleChange} required placeholder=""/>
-            </div>
-            <div className="form-group">
-                <label>Shipping Address:</label>
-                <input name="address" value={customerInfo.address} onChange={handleChange} required placeholder="..." />
+          <div className="info-card">
+            <div className="card-header">
+              <h2><FaShippingFast /> Shipping Information</h2>
+              {orderReady && <span className="edit-badge" onClick={() => setOrderReady(false)}><FaEdit /> Edit</span>}
             </div>
 
-            {!orderReady && (
-                <button type="submit" className="checkout-btn continue-btn">
-                Continue to payment method
+            {!orderReady ? (
+              <form onSubmit={handleSubmitInfo} className="checkout-form">
+                <div className="form-group">
+                  <label>Full Name <span className="required">*</span></label>
+                  <input 
+                    name="name" 
+                    value={customerInfo.name} 
+                    onChange={handleChange} 
+                    required 
+                    placeholder="John Doe" 
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Email Address <span className="required">*</span></label>
+                  <input 
+                    type="email" 
+                    name="email" 
+                    value={customerInfo.email} 
+                    onChange={handleChange} 
+                    required 
+                    placeholder="john@example.com"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Phone Number <span className="required">*</span></label>
+                  <input 
+                    name="phone" 
+                    value={customerInfo.phone} 
+                    onChange={handleChange} 
+                    required 
+                    placeholder="+1 234 567 8900"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Shipping Address <span className="required">*</span></label>
+                  <textarea 
+                    name="address" 
+                    value={customerInfo.address} 
+                    onChange={handleChange} 
+                    required 
+                    placeholder="Street address, apartment, suite, etc."
+                    rows="3"
+                  />
+                </div>
+
+                <button type="submit" className="checkout-btn primary-btn">
+                  <span>Continue to Payment</span>
+                  <FaArrowRight className="btn-arrow" />
                 </button>
+              </form>
+            ) : (
+              <div className="info-summary">
+                <div className="summary-item">
+                  <span className="label">Name:</span>
+                  <span className="value">{customerInfo.name}</span>
+                </div>
+                <div className="summary-item">
+                  <span className="label">Email:</span>
+                  <span className="value">{customerInfo.email}</span>
+                </div>
+                <div className="summary-item">
+                  <span className="label">Phone:</span>
+                  <span className="value">{customerInfo.phone}</span>
+                </div>
+                <div className="summary-item">
+                  <span className="label">Address:</span>
+                  <span className="value">{customerInfo.address}</span>
+                </div>
+              </div>
             )}
-          </form>
+          </div>
         </div>
 
-        {/* CỘT BÊN PHẢI: PHƯƠNG THỨC THANH TOÁN (Chỉ hiện khi đã điền thông tin) */}
-        {orderReady && totalUSD > 0 && (
-          <div className="checkout-right-column animation-fade-in">
-            <div className="payment-section modern-payment">
-              <div className="payment-header">
-                <h2>Select Payment Method</h2>
-                <p className="total-review">
-                  Total: <strong>${totalUSD.toFixed(2)}</strong>
-                </p>
+        {/* RIGHT COLUMN: PAYMENT METHOD & ORDER SUMMARY */}
+        <div className="checkout-right-column">
+          {/* Order Summary Card */}
+          <div className="summary-card">
+            <h3>📋 Order Summary</h3>
+            <div className="summary-details">
+              <div className="summary-row">
+                <span>Subtotal</span>
+                <span className="amount">${totalUSD.toFixed(2)}</span>
+              </div>
+              <div className="summary-row">
+                <span>Shipping</span>
+                <span className="amount free">Free</span>
+              </div>
+              <div className="summary-row">
+                <span>Tax</span>
+                <span className="amount">$0.00</span>
+              </div>
+              <div className="summary-divider"></div>
+              <div className="summary-row total">
+                <span>Total</span>
+                <span className="amount">${totalUSD.toFixed(2)}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Payment Method Selection (Only show when ready) */}
+          {orderReady && totalUSD > 0 && (
+            <div className="payment-card animation-fade-in">
+              <div className="card-header">
+                <h3><FaCreditCard /> Payment Method</h3>
               </div>
 
-              {/* Payment Method Selection List */}
               <div className="payment-options-list">
                 {paymentMethods.map((method) => (
                   <label
@@ -246,13 +350,16 @@ const Checkout = () => {
                       checked={selectedPaymentMethod === method.id}
                       onChange={(e) => setSelectedPaymentMethod(e.target.value)}
                     />
-                    <span className="method-icon">{method.icon}</span>
-                    <span className="method-name">{method.name}</span>
+                    <div className="payment-content">
+                      <span className="method-icon">{method.icon}</span>
+                      <span className="method-name">{method.name}</span>
+                    </div>
+                    <FaCheckCircle className="radio-check" />
                   </label>
                 ))}
               </div>
 
-              {/* Final Action Button Area */}
+              {/* Action Button Area */}
               <div className="payment-action-area">
                 {selectedPaymentMethod === "paypal" ? (
                   <div className="paypal-sdk-wrapper">
@@ -264,13 +371,28 @@ const Checkout = () => {
                     onClick={handlePlaceOrder}
                     disabled={loading || !selectedPaymentMethod}
                   >
-                    {loading ? "Processing..." : `Place Order Now`}
+                    {loading ? (
+                      <>
+                        <span className="spinner"></span>
+                        <span>Processing...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Place Order - ${totalUSD.toFixed(2)}</span>
+                        <FaArrowRight className="btn-arrow" />
+                      </>
+                    )}
                   </button>
                 )}
+
+                <div className="security-badges">
+                  <span><FaLock /> Secure Payment</span>
+                  <span><FaCheckCircle /> SSL Encrypted</span>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

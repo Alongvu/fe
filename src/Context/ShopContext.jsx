@@ -92,6 +92,11 @@ const ShopContextProvider = (props) => {
     return totalItem;
   };
 
+  // 🧹 Clear cart function
+  const clearCart = () => {
+    setCartItems(getDefaultCart());
+  };
+
   // 📤 Truyền dữ liệu ra context
   const contextValue = {
     getTotalCartItems,
@@ -100,6 +105,7 @@ const ShopContextProvider = (props) => {
     cartItems,
     addToCart,
     removeFromCart,
+    clearCart,
   };
 
   return (

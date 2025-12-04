@@ -14,6 +14,7 @@ import Cart from './Pages/Cart'
 import ProductGallery from './Componnents/ShowBy/ProductGallery';
 import ChatBox from './Componnents/ChatBox/ChatBox';
 import Checkout from './Componnents/Checkout/Checkout';
+import PaymentSuccess from './Pages/PaymentSuccess';
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
           <Route path='/cart' element={<Cart />} />
           <Route path='/login' element={<LoginSignup />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/payment-success" element={<PaymentSuccess />} />
         </Routes>
         <ChatBox/>
         <Footer />
