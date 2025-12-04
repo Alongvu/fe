@@ -1,0 +1,176 @@
+/* --- Checkout.css --- */
+
+/* Container chính: Tăng chiều rộng để chứa 2 cột */
+.checkout-container {
+  padding: 40px;
+  max-width: 1100px; /* Rộng hơn để chứa 2 cột */
+  margin: 40px auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+}
+
+/* LAYOUT FLEXBOX MỚI CHO 2 CỘT */
+.checkout-layout-wrapper {
+    display: flex;
+    gap: 50px; /* Khoảng cách giữa 2 cột */
+    align-items: flex-start; /* Căn thẳng hàng phía trên */
+}
+
+/* Cột trái và phải chia sẻ không gian */
+.checkout-left-column, .checkout-right-column {
+    flex: 1;
+}
+
+/* Tùy chọn: Làm cho cột phải "dính" khi cuộn trang nếu form bên trái dài */
+.checkout-right-column {
+    position: sticky;
+    top: 20px;
+}
+
+
+h1, h2 { color: #333; }
+h1 { text-align: left; margin-bottom: 25px; } /* Căn trái tiêu đề */
+
+.checkout-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-bottom: 25px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.checkout-form label {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #555;
+}
+
+.checkout-form input {
+  padding: 12px 15px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  transition: border-color 0.3s;
+}
+.checkout-form input:focus { outline: none; border-color: #0070ba; }
+
+.checkout-btn {
+  padding: 15px;
+  background-color: #0070ba;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+  width: 100%;
+}
+.checkout-btn:hover { background-color: #005c99; }
+.checkout-btn:disabled { background-color: #ccc; cursor: not-allowed; }
+.continue-btn { margin-top: 10px; }
+
+
+/* --- PHẦN THANH TOÁN BÊN PHẢI --- */
+/* Style lại như một chiếc thẻ (card) riêng biệt */
+.payment-section.modern-payment {
+    background: #fcfcfc;
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    /* Loại bỏ margin-top và border-top cũ */
+}
+
+.payment-header {
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+.payment-header h2 { font-size: 22px; margin: 0 0 10px 0; }
+.total-review { font-size: 18px; color: #555; margin: 0; }
+.total-review strong { color: #0070ba; font-size: 22px; }
+
+/* Danh sách lựa chọn (Radio Cards) */
+.payment-options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.payment-option-card {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: #fff;
+}
+
+.payment-option-card:hover {
+    border-color: #b3d7ff;
+    background: #f8fbff;
+}
+
+.payment-option-card.selected {
+    border-color: #0070ba;
+    background: #ebf5ff;
+    box-shadow: 0 2px 8px rgba(0,112,186, 0.15);
+}
+
+.payment-option-card input[type="radio"] {
+    accent-color: #0070ba;
+    margin-right: 15px;
+    transform: scale(1.2);
+}
+
+.method-icon { font-size: 24px; margin-right: 15px; }
+.method-name { font-size: 16px; font-weight: 500; color: #333; }
+
+/* Khu vực nút hành động cuối cùng */
+.payment-action-area { margin-top: 20px; }
+
+.final-pay-btn {
+    background-color: #28a745;
+    font-size: 20px;
+}
+.final-pay-btn:hover { background-color: #218838; }
+
+.paypal-sdk-wrapper {
+     border-radius: 10px;
+     overflow: hidden;
+     margin-top: 10px;
+}
+
+/* Animation cho cột phải xuất hiện */
+.animation-fade-in {
+    animation: fadeInRight 0.5s ease;
+}
+
+@keyframes fadeInRight {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* --- RESPONSIVE: Trên màn hình nhỏ (mobile/tablet), xếp chồng lên nhau --- */
+@media (max-width: 900px) {
+    .checkout-layout-wrapper {
+        flex-direction: column; /* Xếp dọc */
+        gap: 40px;
+    }
+    .checkout-container {
+        padding: 25px;
+    }
+    .checkout-right-column {
+        position: static; /* Bỏ sticky trên mobile */
+    }
+}

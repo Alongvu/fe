@@ -1,0 +1,184 @@
+/* ==================== KHUNG CHATBOX ==================== */
+.chatbox-container {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  width: 380px;
+  height: 450px; /* ✅ cao hơn */
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 2000;
+  animation: slideUp 0.3s ease;
+  font-family: "Poppins", sans-serif;
+}
+@keyframes slideUp {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.chatbox-container {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  width: 380px;
+  height: 520px;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 2000;
+
+  /* ✅ Thêm hiệu ứng slide + fade */
+  animation: slideUp 0.35s ease-out;
+}
+
+
+/* ==================== HEADER ==================== */
+.chatbox-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #1877f2, #42a5f5);
+  color: white;
+  padding: 10px 15px;
+}
+
+.chatbox-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chatbox-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.chatbox-header h2 {
+  font-size: 15px;
+  margin: 0;
+}
+
+.minimize-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.minimize-btn:hover {
+  transform: scale(1.2);
+}
+
+/* ==================== TIN NHẮN ==================== */
+.chatbox-messages {
+  flex: 1;
+  padding: 14px;
+  overflow-y: auto;
+  background: #f0f2f5;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chat-message {
+  padding: 10px 14px;
+  border-radius: 18px;
+  max-width: 80%;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.chat-message.user {
+  background: #0084ff;
+  color: #fff;
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
+
+.chat-message.assistant {
+  background: #e4e6eb;
+  color: #111;
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+}
+
+/* ==================== INPUT ==================== */
+.chatbox-input {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  background: #fff;
+  border-top: 1px solid #ddd;
+  gap: 8px;
+}
+
+.chatbox-input input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  outline: none;
+  font-size: 14px;
+  background: #f7f7f7;
+}
+
+.chatbox-input input:focus {
+  border-color: #1877f2;
+  background: #fff;
+}
+
+.chatbox-input button {
+  background: #1877f2;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.chatbox-input button:hover {
+  background: #166fe5;
+}
+
+/* ==================== NÚT TRÒN THU GỌN ==================== */
+.chatbox-avatar {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  width: 65px;
+  height: 65px;
+  background: linear-gradient(135deg, #1877f2, #42a5f5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  z-index: 2001;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.chatbox-avatar:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(66, 165, 245, 0.8);
+}
